@@ -12,47 +12,22 @@ struct ContentView: View {
 
     var body: some View {
         ZStack(alignment: .top) {
-            Color("background")
-                .ignoresSafeArea()
-            ScrollView {
-                LazyVStack(spacing: 20) {
-
-                    BigWidgetView()
-
-                    VStack(alignment: .leading, spacing: 20) {
-                        Text("Today")
-                            .font(.custom("Inter", size: 25))
-                            .fontWeight(.semibold)
-                            .foregroundStyle(Color("dark-blue"))
-                        ScrollView(.horizontal) {
-                            LazyHStack {
-                                ForEach(1..<24) { _ in
-                                    HourlyWidgetView()
-                                        .padding(.trailing, 5)
-                                }
-                            }
-                        }
-                        .scrollIndicators(.hidden)
-
-                        Text("10-day forecast")
-                            .font(.custom("Inter", size: 25))
-                            .fontWeight(.semibold)
-                            .foregroundStyle(Color("dark-blue"))
-                        ForEach(1..<10) { _ in
-                            DailyWidgetView()
-                                .padding(.trailing)
-                        }
+            if let weather = viewModel.weather {
+                Color("background")
+                    .ignoresSafeArea()
+                ScrollView {
+                    LazyVStack(alignment: .center, spacing: 20) {
+                        BigWidgetView()
+                        HourlyForecastView(weather: weather)
+                        DailyForecastView(weather: weather)
                     }
-                    .padding(.leading)
                 }
+            } else {
+                ProgressView()
             }
         }
         .onAppear {
             viewModel.fetchWeather(lat: 52.2298, lon: 21.0118)
         }
     }
-}
-
-#Preview {
-    ContentView()
 }

@@ -30,47 +30,51 @@ struct DetailView: View {
 }
 
 struct BigWidgetView: View {
+    @EnvironmentObject var viewModel: WeatherViewModel
+    
     var body: some View {
         ZStack(alignment: .top) {
-            Image("cloudy")
-                .offset(x: -15, y: 30)
-            
-            Button {
-                // Show list view
-            } label: {
-                Image("burger-icon")
-            }
-            .offset(x: -150, y: 15)
-            
-            VStack {
-                Text("Warsaw")
-                    .bold()
-                    .font(.custom("Inter", size: 30))
-                    .foregroundStyle(Color("dark-blue"))
+            if let weather = viewModel.weather {
+                Image("cloudy")
+                    .offset(x: -15, y: 30)
                 
-                Text("23 Oct, Wednesday")
-                    .foregroundStyle(Color("accent-blue"))
-                    .font(.custom("Inter", size: 15))
-                
-                Spacer()
+                Button {
+                    // Show list view
+                } label: {
+                    Image("burger-icon")
+                }
+                .offset(x: -150, y: 15)
                 
                 VStack {
-                    Text("13°")
+                    Text("Warsaw")
                         .bold()
-                        .font(.custom("Inter", size: 80))
+                        .font(.custom("Inter", size: 30))
                         .foregroundStyle(Color("dark-blue"))
                     
-                    Text("Partly Cloudy")
-                        .font(.custom("Inter", size: 20))
+                    Text("23 Oct, Wednesday")
                         .foregroundStyle(Color("accent-blue"))
+                        .font(.custom("Inter", size: 15))
+                    
+                    Spacer()
+                    
+                    VStack {
+                        Text(String(format: "%0.0f°", weather.current.temperature))
+                            .bold()
+                            .font(.custom("Inter", size: 80))
+                            .foregroundStyle(Color("dark-blue"))
+                        
+                        Text("Partly Cloudy")
+                            .font(.custom("Inter", size: 20))
+                            .foregroundStyle(Color("accent-blue"))
+                    }
+                    
+                    HStack(spacing: 50) {
+                        DetailView(icon: "wind-icon", value: (String(format: "%0.0fkm/h", weather.current.windSpeed)), description: "Wind")
+                        DetailView(icon: "cloud-icon", value: "\(weather.current.humidity)%", description: "Humidity")
+                        DetailView(icon: "rain-icon", value: "\(weather.current.precipitation)%", description: "Chance of rain")
+                    }
+                    .padding()
                 }
-                
-                HStack(spacing: 50) {
-                    DetailView(icon: "wind-icon", value: "13km/h", description: "Wind")
-                    DetailView(icon: "cloud-icon", value: "24%", description: "Humidity")
-                    DetailView(icon: "rain-icon", value: "15%", description: "Chance of rain")
-                }
-                .padding()
             }
         }
         .frame(height: 480)

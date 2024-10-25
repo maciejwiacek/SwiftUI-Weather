@@ -6,6 +6,7 @@
 //
 
 struct Weather: Decodable {
+    let timezone: String
     let current: Current
     let hourly: Hourly
     let daily: Daily
@@ -18,13 +19,15 @@ struct Current: Decodable {
         case windSpeed = "wind_speed_10m"
         case precipitation = "precipitation"
         case weatherCode = "weather_code"
+        case time = "time"
     }
     
     let temperature: Double
     let humidity: Int
     let windSpeed: Double
-    let precipitation: Double
+    let precipitation: Int
     let weatherCode: Int
+    let time: String
 }
 
 struct Hourly: Decodable {
