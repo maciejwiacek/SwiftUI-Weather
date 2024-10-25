@@ -8,14 +8,17 @@
 import SwiftUI
 
 struct ContentView: View {
+    @EnvironmentObject var viewModel: WeatherViewModel
+
     var body: some View {
         ZStack(alignment: .top) {
             Color("background")
                 .ignoresSafeArea()
             ScrollView {
                 LazyVStack(spacing: 20) {
+
                     BigWidgetView()
-                    
+
                     VStack(alignment: .leading, spacing: 20) {
                         Text("Today")
                             .font(.custom("Inter", size: 25))
@@ -30,7 +33,7 @@ struct ContentView: View {
                             }
                         }
                         .scrollIndicators(.hidden)
-                        
+
                         Text("10-day forecast")
                             .font(.custom("Inter", size: 25))
                             .fontWeight(.semibold)
@@ -43,6 +46,9 @@ struct ContentView: View {
                     .padding(.leading)
                 }
             }
+        }
+        .onAppear {
+            viewModel.fetchWeather(lat: 52.2298, lon: 21.0118)
         }
     }
 }

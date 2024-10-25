@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-let url =
-    "https://api.open-meteo.com/v1/forecast?latitude=52.2298&longitude=21.0118&current=temperature_2m,relative_humidity_2m,precipitation,weather_code,wind_speed_10m&hourly=temperature_2m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min&forecast_days=14"
+//let url =
+//    "https://api.open-meteo.com/v1/forecast?latitude=52.2298&longitude=21.0118&current=temperature_2m,relative_humidity_2m,precipitation,weather_code,wind_speed_10m&hourly=temperature_2m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min&forecast_days=14"
 
 class WeatherViewModel: ObservableObject {
     @Published var weather: Weather?
@@ -25,10 +25,12 @@ class WeatherViewModel: ObservableObject {
                 let decodedData = try JSONDecoder().decode(Weather.self, from: data)
                 DispatchQueue.main.async {
                     self.weather = decodedData
+                    print("Data fetched succesfully!")
                     self.isLoading = false
                 }
             } catch {
                 DispatchQueue.main.async {
+                    print("There was some error while fetching your data! \(error.localizedDescription)")
                     self.isLoading = false
                 }
             }

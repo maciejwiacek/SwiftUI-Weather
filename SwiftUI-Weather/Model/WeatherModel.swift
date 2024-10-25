@@ -21,7 +21,7 @@ struct Current: Decodable {
     }
     
     let temperature: Double
-    let humidity: String
+    let humidity: Int
     let windSpeed: Double
     let precipitation: Double
     let weatherCode: Int
