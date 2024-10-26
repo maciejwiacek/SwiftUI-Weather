@@ -7,8 +7,12 @@
 
 import Foundation
 
-struct City: Identifiable, Hashable {
-    let id = UUID()
+struct Forecast {
+    let city: City
+    let weather: Weather
+}
+
+struct City {
     let name: String
     let lat: Double
     let lon: Double

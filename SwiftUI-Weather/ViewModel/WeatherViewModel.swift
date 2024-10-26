@@ -8,28 +8,23 @@
 import SwiftUI
 
 class WeatherViewModel: ObservableObject {
-    @Published var weatherList: [City: Weather] = [:]
-    @Published var isLoading = false
-    
-    func loadWeather(for cities: [City]) async {
+    @Published var forecasts: [Forecast] = []
+
+    func loadForecast(for cities: [City]) async {
         for city in cities {
             do {
                 let weather = try await fetchWeather(lat: city.lat, lon: city.lon)
+                let newForecast = Forecast(city: city, weather: weather)
                 DispatchQueue.main.async {
-                    self.weatherList[city] = weather
-                    self.isLoading = false
+                    self.forecasts.append(newForecast)
                 }
             } catch {
-                fatalError("Error fetching weather for \(city): \(error.localizedDescription)")
+                fatalError("Error fetching weather: \(error)")
             }
         }
     }
-
+    
     private func fetchWeather(lat: Double, lon: Double) async throws -> Weather {
-        DispatchQueue.main.async {
-            self.isLoading = true
-        }
-        
         guard let url = buildWeatherURL(lat: lat, lon: lon) else { throw URLError(.badURL) }
         
         do {
