@@ -19,8 +19,8 @@ struct DailyForecastView: View {
             ForEach(0..<10) { index in
                 DailyWidgetView(temperatureMin: weather.daily.temperatureMin[index],
                                 temperatureMax: weather.daily.temperatureMax[index],
-                                icon: "cloudy",
-                                description: "Cloudy",
+                                icon: weather.daily.icon[index],
+                                description: weather.daily.description[index],
                                 timestamp: weather.daily.time[index],
                                 timezone: weather.timezone)
             }

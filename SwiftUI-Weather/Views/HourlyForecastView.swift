@@ -40,7 +40,10 @@ struct HourlyForecastView: View {
             ScrollView(.horizontal) {
                 LazyHStack {
                     ForEach(Array(startingHourIndex ..< startingHourIndex + 24), id: \.self) { index in
-                        HourlyWidgetView(temperature: weather.hourly.temperature[index], icon: "cloudy", timestamp: weather.hourly.time[index], timezone: weather.timezone)
+                        HourlyWidgetView(temperature: weather.hourly.temperature[index],
+                                         icon: weather.hourly.icon[index],
+                                         timestamp: weather.hourly.time[index],
+                                         timezone: weather.timezone)
                             .padding(.trailing, 5)
                     }
                 }

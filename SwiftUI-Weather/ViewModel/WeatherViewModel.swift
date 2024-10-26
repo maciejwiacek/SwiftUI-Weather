@@ -27,7 +27,7 @@ class WeatherViewModel: ObservableObject {
                 }
             } catch {
                 DispatchQueue.main.async {
-                    print("There was some error while fetching your data! \(error.localizedDescription)")
+                    print("There was some error while fetching your data! \(error.localizedDescription)\n\(url.absoluteString)")
                     self.isLoading = false
                 }
             }
@@ -43,8 +43,8 @@ class WeatherViewModel: ObservableObject {
         components.queryItems = [
             URLQueryItem(name: "latitude", value: "\(lat)"),
             URLQueryItem(name: "longitude", value: "\(lon)"),
-            URLQueryItem(name: "current", value: "temperature_2m,relative_humidity_2m,precipitation,weather_code,wind_speed_10m"),
-            URLQueryItem(name: "hourly", value: "temperature_2m,weather_code"),
+            URLQueryItem(name: "current", value: "temperature_2m,relative_humidity_2m,precipitation,weather_code,wind_speed_10m,is_day"),
+            URLQueryItem(name: "hourly", value: "temperature_2m,weather_code,is_day"),
             URLQueryItem(name: "daily", value: "weather_code,temperature_2m_max,temperature_2m_min"),
             URLQueryItem(name: "forecast_days", value: "14"),
         ]

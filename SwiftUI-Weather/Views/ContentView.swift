@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @EnvironmentObject var viewModel: WeatherViewModel
+    @StateObject var viewModel = WeatherViewModel()
 
     var body: some View {
         ZStack(alignment: .top) {
@@ -17,7 +17,7 @@ struct ContentView: View {
                     .ignoresSafeArea()
                 ScrollView {
                     LazyVStack(alignment: .center, spacing: 20) {
-                        BigWidgetView()
+                        BigWidgetView(currentWeather: weather.current)
                         HourlyForecastView(weather: weather)
                         DailyForecastView(weather: weather)
                     }
