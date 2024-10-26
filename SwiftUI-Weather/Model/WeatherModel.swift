@@ -7,25 +7,26 @@
 
 import Foundation
 
-struct Forecast {
+struct Forecast: Identifiable, Hashable {
+    var id = UUID()
     let city: City
     let weather: Weather
 }
 
-struct City {
+struct City: Hashable {
     let name: String
     let lat: Double
     let lon: Double
 }
 
-struct Weather: Decodable {
+struct Weather: Decodable, Hashable {
     let timezone: String
     let current: CurrentWeather
     let hourly: HourlyWeather
     let daily: DailyWeather
 }
 
-struct CurrentWeather: Decodable {
+struct CurrentWeather: Decodable, Hashable {
     enum CodingKeys: String, CodingKey {
         case temperature = "temperature_2m"
         case humidity = "relative_humidity_2m"
@@ -45,7 +46,7 @@ struct CurrentWeather: Decodable {
     let isDay: Int
 }
 
-struct HourlyWeather: Decodable {
+struct HourlyWeather: Decodable, Hashable {
     enum CodingKeys: String, CodingKey {
         case time = "time"
         case temperature = "temperature_2m"
@@ -59,7 +60,7 @@ struct HourlyWeather: Decodable {
     let isDay: [Int]
 }
 
-struct DailyWeather: Decodable {
+struct DailyWeather: Decodable, Hashable {
     enum CodingKeys: String, CodingKey {
         case time = "time"
         case weatherCode = "weather_code"

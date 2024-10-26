@@ -30,6 +30,8 @@ struct DetailView: View {
 }
 
 struct BigWidgetView: View {
+    @Environment(\.dismiss) var dismiss
+    
     let cityName: String
     let currentWeather: CurrentWeather
     
@@ -48,7 +50,7 @@ struct BigWidgetView: View {
                 .offset(y: 60)
 
             Button {
-                // Show list view
+                dismiss()
             } label: {
                 Image("burger-icon")
             }
