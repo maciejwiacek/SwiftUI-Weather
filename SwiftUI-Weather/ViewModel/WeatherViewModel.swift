@@ -8,32 +8,39 @@
 import SwiftUI
 
 class WeatherViewModel: ObservableObject {
-    @Published var weather: Weather?
+    @Published var weatherList: [City: Weather] = [:]
     @Published var isLoading = false
-
-    func fetchWeather(lat: Double, lon: Double) {
-        isLoading = true
-        
-        guard let url = buildWeatherURL(lat: lat, lon: lon) else { return }
-        
-        Task {
+    
+    func loadWeather(for cities: [City]) async {
+        for city in cities {
             do {
-                let (data, _) = try await URLSession.shared.data(from: url)
-                let decodedData = try JSONDecoder().decode(Weather.self, from: data)
+                let weather = try await fetchWeather(lat: city.lat, lon: city.lon)
                 DispatchQueue.main.async {
-                    self.weather = decodedData
-                    print("Data fetched succesfully from\n\(url.absoluteString)")
+                    self.weatherList[city] = weather
                     self.isLoading = false
                 }
             } catch {
-                DispatchQueue.main.async {
-                    print("There was some error while fetching your data! \(error.localizedDescription)\n\(url.absoluteString)")
-                    self.isLoading = false
-                }
+                fatalError("Error fetching weather for \(city): \(error.localizedDescription)")
             }
         }
     }
 
+    private func fetchWeather(lat: Double, lon: Double) async throws -> Weather {
+        DispatchQueue.main.async {
+            self.isLoading = true
+        }
+        
+        guard let url = buildWeatherURL(lat: lat, lon: lon) else { throw URLError(.badURL) }
+        
+        do {
+            let (data, _) = try await URLSession.shared.data(from: url)
+            let weatherData = try JSONDecoder().decode(Weather.self, from: data)
+            return weatherData
+        } catch {
+            throw URLError(.badServerResponse)
+        }
+    }
+    
     private func buildWeatherURL(lat: Double, lon: Double) -> URL? {
         var components = URLComponents()
         components.scheme = "https"

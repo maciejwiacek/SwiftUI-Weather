@@ -9,15 +9,19 @@ import SwiftUI
 
 struct ContentView: View {
     @StateObject var viewModel = WeatherViewModel()
+    let cities = [
+        City(name: "Warsaw", lat: 52.2298, lon: 21.0118),
+        City(name: "New York", lat: 40.7128, lon: -73.935242)
+    ]
 
     var body: some View {
         ZStack(alignment: .top) {
-            if let weather = viewModel.weather {
+            if let weather = viewModel.weatherList[cities[1]] {
                 Color("background")
                     .ignoresSafeArea()
                 ScrollView {
                     LazyVStack(alignment: .center, spacing: 20) {
-                        BigWidgetView(currentWeather: weather.current)
+                        BigWidgetView(cityName: cities[1].name, currentWeather: weather.current)
                         HourlyForecastView(weather: weather)
                         DailyForecastView(weather: weather)
                     }
@@ -27,7 +31,9 @@ struct ContentView: View {
             }
         }
         .onAppear {
-            viewModel.fetchWeather(lat: 52.2298, lon: 21.0118)
+            Task {
+                await viewModel.loadWeather(for: cities)
+            }
         }
     }
 }

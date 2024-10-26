@@ -30,7 +30,14 @@ struct DetailView: View {
 }
 
 struct BigWidgetView: View {
+    let cityName: String
     let currentWeather: CurrentWeather
+    
+    var dateString: String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd MMM, EEEE"
+        return formatter.string(from: Date())
+    }
 
     var body: some View {
         ZStack(alignment: .top) {
@@ -48,12 +55,12 @@ struct BigWidgetView: View {
             .offset(x: -150, y: 15)
 
             VStack {
-                Text("Warsaw")
+                Text(cityName)
                     .bold()
                     .font(.custom("Inter", size: 30))
                     .foregroundStyle(Color("dark-blue"))
 
-                Text("23 Oct, Wednesday")
+                Text(dateString)
                     .foregroundStyle(Color("accent-blue"))
                     .font(.custom("Inter", size: 15))
 

@@ -5,6 +5,15 @@
 //  Created by Maciej Wiącek on 25/10/2024.
 //
 
+import Foundation
+
+struct City: Identifiable, Hashable {
+    let id = UUID()
+    let name: String
+    let lat: Double
+    let lon: Double
+}
+
 struct Weather: Decodable {
     let timezone: String
     let current: CurrentWeather
