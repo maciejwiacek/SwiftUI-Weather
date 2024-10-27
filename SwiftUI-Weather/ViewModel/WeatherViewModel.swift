@@ -28,6 +28,7 @@ class WeatherViewModel: ObservableObject {
         guard let url = buildWeatherURL(lat: lat, lon: lon) else { throw URLError(.badURL) }
         
         do {
+            print(url.absoluteString)
             let (data, _) = try await URLSession.shared.data(from: url)
             let weatherData = try JSONDecoder().decode(Weather.self, from: data)
             return weatherData
@@ -49,6 +50,7 @@ class WeatherViewModel: ObservableObject {
             URLQueryItem(name: "hourly", value: "temperature_2m,weather_code,is_day"),
             URLQueryItem(name: "daily", value: "weather_code,temperature_2m_max,temperature_2m_min"),
             URLQueryItem(name: "forecast_days", value: "14"),
+            URLQueryItem(name: "timezone", value: "auto"),
         ]
 
         return components.url

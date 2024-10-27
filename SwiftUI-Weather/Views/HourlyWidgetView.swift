@@ -20,7 +20,7 @@ struct HourlyWidgetView: View {
         
         let outputDate = DateFormatter()
         outputDate.dateFormat = "HH"
-        outputDate.timeZone = TimeZone.current
+        outputDate.timeZone = TimeZone(identifier: timezone)
         
         if let date = formatter.date(from: timestamp) {
             return outputDate.string(from: date)

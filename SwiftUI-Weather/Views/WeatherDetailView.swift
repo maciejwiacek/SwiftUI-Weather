@@ -17,7 +17,8 @@ struct WeatherDetailView: View {
             ScrollView {
                 LazyVStack(alignment: .center, spacing: 20) {
                     BigWidgetView(cityName: forecast.city.name,
-                                  currentWeather: forecast.weather.current)
+                                  currentWeather: forecast.weather.current,
+                                  forecast: forecast)
                     HourlyForecastView(weather: forecast.weather)
                     DailyForecastView(weather: forecast.weather)
                 }

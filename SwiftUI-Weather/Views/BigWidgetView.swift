@@ -34,10 +34,12 @@ struct BigWidgetView: View {
     
     let cityName: String
     let currentWeather: CurrentWeather
+    let forecast: Forecast
     
     var dateString: String {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd MMM, EEEE"
+        formatter.timeZone = TimeZone(identifier: forecast.weather.timezone)
         return formatter.string(from: Date())
     }
 

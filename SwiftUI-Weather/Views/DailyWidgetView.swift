@@ -22,7 +22,7 @@ struct DailyWidgetView: View {
         
         let outputDate = DateFormatter()
         outputDate.dateFormat = "E"
-        outputDate.timeZone = TimeZone.current
+        outputDate.timeZone = TimeZone(identifier: timezone)
         
         if let date = formatter.date(from: timestamp) {
             return outputDate.string(from: date)
